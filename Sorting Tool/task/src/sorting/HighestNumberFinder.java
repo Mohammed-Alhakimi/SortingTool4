@@ -82,9 +82,13 @@ public class HighestNumberFinder extends Finder<Long> {
             for (int i = 0; i < listOfItems.size(); i++) {
                 array[i] = listOfItems.get(i);
             }
-            System.out.println(Arrays.toString(array));
             mergeSort(array);
-            System.out.println(Arrays.toString(array));
+            int x = 0;
+            for (long l : array
+                 ) {
+                listOfItems.set(x,l);
+                x++;
+            }
         } else {
             sort();
         }
