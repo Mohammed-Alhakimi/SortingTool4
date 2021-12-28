@@ -1,32 +1,31 @@
 package sorting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
-public class WordFinder extends Finder {
+public class WordFinder extends Finder<String> {
     private String longestWord;
-
 
     public WordFinder(ArrayList<String> listOfItems) {
         super(listOfItems);
     }
 
     @Override
-    public int scanAndAdd() {
+    public void scanAndAdd() {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
             String word = scanner.next();
             super.listOfItems.add(word);
         }
-        return listOfItems.size();
     }
 
     @Override
-    public Object findHighestValue() {
-        String longestWord = (String) listOfItems.get(0);
-        for (Object l : listOfItems) {
-            if ((l.toString().length() > longestWord.length())) {
-                longestWord = (String) l;
+    public String findHighestValue() {
+        String longestWord =  listOfItems.get(0);
+        for (String s : listOfItems) {
+            if (s.length() > longestWord.length()) {
+                longestWord =  s;
             }
         }
         this.longestWord = longestWord;
@@ -36,9 +35,9 @@ public class WordFinder extends Finder {
     @Override
     public int howManyTimeOccurred() {
         int counter = 0;
-        for (Object s : listOfItems
+        for (String s : listOfItems
         ) {
-            if (s.toString().equals(longestWord)) {
+            if (s.equals(longestWord)) {
                 counter++;
             }
         }
@@ -47,6 +46,30 @@ public class WordFinder extends Finder {
 
     @Override
     public String displayInfo() {
-        return String.format("Total words: %d.\nThe longest word: %s (%d time(s), %d%%).", listOfItems.size(), longestWord, howManyTimeOccurred(), getPercentage());
+        return String.format("Total words: %d." +
+                        "\nThe longest word: %s (%d time(s), %d%%)."
+                , listOfItems.size()
+                , longestWord
+                , howManyTimeOccurred()
+                , getPercentage());
+    }
+
+    @Override
+    public void displayInfo(boolean displaySortedInfo) {
+        System.out.print("Sorted data: ");
+        for (String s: listOfItems
+        ) {
+            System.out.print(s + " ");
+        }
+    }
+
+    @Override
+    public void sort() {
+        Collections.sort(this.listOfItems);
+    }
+
+    @Override
+    public void sort(String type) {
+
     }
 }

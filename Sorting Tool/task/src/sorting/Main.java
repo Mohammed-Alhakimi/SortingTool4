@@ -1,25 +1,38 @@
 package sorting;
 
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
+
         FinderFactory factory = new FinderFactory();
         Finder finder = null;
-        boolean b = args.length > 0;
-        if (b) {
-            String option = args[0];
-            String type = args[1];
-            if (option.equals("-dataType")) {
-                finder = factory.makeFinder(type);
-            } else {
-                finder = factory.makeFinder("word");
+        boolean argsPassed = args.length > 0;
+        if(argsPassed){
+            if(Arrays.stream(args).anyMatch(s -> s.equals("-sortIntegers"))){
+                finder= factory.makeFinder("long");
+                doOperations(finder,true);
             }
-        } else {
+            else if(Arrays.stream(args).anyMatch(s -> s.equals("-dataType"))){
+                String  type = args[1];
+                finder=factory.makeFinder(type);
+                doOperations(finder);
+            }
+        }else {
             finder = factory.makeFinder("word");
+            doOperations(finder);
         }
+    }
+    private static void doOperations(Finder finder) {
         finder.scanAndAdd();
         finder.findHighestValue();
         System.out.println(finder.displayInfo());
-        ;
+    }
+    private static void doOperations(Finder finder,boolean sort) {
+        finder.scanAndAdd();
+        System.out.println("Total numbers: "+finder.listOfItems.size()+".");
+        finder.sort("mergesort");
+        finder.displayInfo(true);
     }
 }

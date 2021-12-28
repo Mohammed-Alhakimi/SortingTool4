@@ -10,7 +10,7 @@ public abstract class Finder<T> {
         this.listOfItems = listOfItems;
     }
 
-    public abstract int scanAndAdd();
+    public abstract void scanAndAdd();
 
     public abstract T findHighestValue();
 
@@ -18,7 +18,13 @@ public abstract class Finder<T> {
 
     public abstract String displayInfo();
 
+    public abstract void displayInfo(boolean displaySortedInfo);
+
     public int getPercentage() {
         return (howManyTimeOccurred() * 100) / listOfItems.size();
     }
+
+    public abstract void sort();
+
+    public abstract void sort(String type);
 }
