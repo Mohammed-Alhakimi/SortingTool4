@@ -1,7 +1,6 @@
 package sorting;
 
-
-import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,30 +8,51 @@ public class Main {
         FinderFactory factory = new FinderFactory();
         Finder finder = null;
         boolean argsPassed = args.length > 0;
-        if(argsPassed){
-            if(Arrays.stream(args).anyMatch(s -> s.equals("-sortIntegers"))){
-                finder= factory.makeFinder("long");
-                doOperations(finder,true);
+        if (argsPassed) {
+            String[] arrayOfArgs = new String[args.length];
+            for (int i = 0; i < args.length; i++) {
+                arrayOfArgs[i] = args[i];
             }
-            else if(Arrays.stream(args).anyMatch(s -> s.equals("-dataType"))){
-                String  type = args[1];
-                finder=factory.makeFinder(type);
-                doOperations(finder);
+            List<String> listOfArgs = List.of(arrayOfArgs);
+            if (listOfArgs.get(0).equals("-dataType")) {
+                finder = factory.makeFinder(arrayOfArgs[listOfArgs.indexOf("-dataType") + 1]);
+                if (listOfArgs.contains("-sortingType")) {
+                    if (arrayOfArgs[listOfArgs.indexOf("-sortingType") + 1].equalsIgnoreCase("byCount")) {
+                        doOperations(finder, true);
+                    } else {
+                        doOperations(finder);
+                    }
+                } else {
+                    doOperations(finder);
+                }
             }
-        }else {
+            if (listOfArgs.get(0).equals("-sortingType")) {
+                if (listOfArgs.contains("-dataType")) {
+                    finder = factory.makeFinder(arrayOfArgs[listOfArgs.indexOf("-dataType") + 1]);
+                } else {
+                    finder = factory.makeFinder("word");
+                }
+                if (arrayOfArgs[listOfArgs.indexOf("-sortingType") + 1].equalsIgnoreCase("byCount")) {
+                    doOperations(finder, true);
+                } else {
+                    doOperations(finder);
+                }
+            }
+        } else {
             finder = factory.makeFinder("word");
             doOperations(finder);
         }
     }
+
     private static void doOperations(Finder finder) {
         finder.scanAndAdd();
-        finder.findHighestValue();
         System.out.println(finder.displayInfo());
+        finder.displayInfoSorting("");
     }
-    private static void doOperations(Finder finder,boolean sort) {
+
+    private static void doOperations(Finder finder, boolean sortByCount) {
         finder.scanAndAdd();
-        System.out.println("Total numbers: "+finder.listOfItems.size()+".");
-        finder.sort("mergesort");
-        finder.displayInfo(true);
+        System.out.println(finder.displayInfo());
+        finder.sortByCount();
     }
 }
